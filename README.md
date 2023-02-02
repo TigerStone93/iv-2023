@@ -16,8 +16,3 @@
 1) 1 3D scene file of an ACC test way implemented via the MATLAB RoadRunner
 2) 5 scenario files of the Euro NCAP Assisted Driving Test complying with the Euro NCAP Test Protocol and the ASAM OpenSCENARIO 1.0 Standard
 3) 5 videos of validation simulation performed on the 5 types of Euro NCAP Assisted Driving Test scenarios implemented in CARLA Simulator
-
-
-
-https://user-images.githubusercontent.com/46550846/216242702-98a71ac0-eae0-419f-987c-0caf0fe68055.mp4
-
