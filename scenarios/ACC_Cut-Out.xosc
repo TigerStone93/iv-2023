@@ -1,0 +1,479 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OpenSCENARIO>
+  <FileHeader revMajor="1" revMinor="0" date="2022-10-27T12:00:00" description="CARLA:ACC_Cut-Out" author="Ho_Suk_Yonsei_University"/>
+  <ParameterDeclarations>
+    <ParameterDeclaration name="VUT_and_Lead_Vehicle_Distance" parameterType="double" value="46.1111"/> <!-- 64.1666m + 16.6666m -34.7222m = 46.1111m -->
+    <ParameterDeclaration name="Lead_Vehicle_and_GVT_Distance" parameterType="double" value="92.2777"/> <!-- 41.6666m + 4.5m + 34.7222m = 80.8888m -->
+    
+    <ParameterDeclaration name="VUT_Acceleration_Distance" parameterType="double" value="64.1666"/> <!-- 19.4444m/s / 3.4722m/s^2 = 5.6s   (5.6 + 1)s * (19.4444 / 2)m/s = 64.1666m -->
+    <ParameterDeclaration name="VUT_and_Lead_Vehicle_TTC_Distance" parameterType="double" value="16.6666"/> <!-- ParameterDeclaration for Property IS NOT SUPPORTED!!! --> <!-- (19.4444 - 13.8888)m/s * 3s = 16.6666m -->
+    <ParameterDeclaration name="VUT_Target_Speed" parameterType="double" value="19.4444"/> <!-- 19.4444m/s = 70km/h -->
+    <ParameterDeclaration name="VUT_ACC_Distance" parameterType="double" value="50"/>
+    <ParameterDeclaration name="VUT_Total_Distance" parameterType="double" value="188.3888"/> <!-- 46.1111m + 92.2777m + 50m = 188.3888m -->
+    
+    <ParameterDeclaration name="Lead_Vehicle_Preparation_Time" parameterType="double" value="1.6"/> <!-- ParameterDeclaration for delay IS NOT SUPPORTED!!! --> <!-- 5.6s - 4s = 1.6s -->
+    <ParameterDeclaration name="Lead_Vehicle_Acceleration_Distance" parameterType="double" value="34.7222"/> <!-- 13.8888m/s / 3.4722m/s^2 = 4s   (4 + 1)s * (13.8888 / 2)m/s = 34.7222m -->
+    <ParameterDeclaration name="Lead_Vehicle_Target_Speed" parameterType="double" value="13.8888"/> <!-- 13.8888m/s = 50km/h -->
+    <ParameterDeclaration name="Lead_Vehicle_Lane_Change_Longitudinal_Distance" parameterType="double" value="41.6666"/> <!-- 3s -->
+    
+    <ParameterDeclaration name="Start_Preparation_Time" parameterType="double" value="0.5"/> <!-- ParameterDeclaration for delay IS NOT SUPPORTED!!! -->
+    <ParameterDeclaration name="Success_Stop_Decision_Time" parameterType="double" value="2"/> <!-- 2s -->
+    <ParameterDeclaration name="Failure_Collision_Decision_Time" parameterType="double" value="12.5"/> <!-- ParameterDeclaration for delay IS NOT SUPPORTED!!! -->
+  </ParameterDeclarations>
+  <CatalogLocations/>
+  
+  <RoadNetwork>
+    <LogicFile filepath="Euro_NCAP_Test_Way"/>
+  </RoadNetwork>
+  
+  <Entities>
+    <ScenarioObject name="hero">
+      <Vehicle name="vehicle.audi.etron" vehicleCategory="car">
+        <ParameterDeclarations/>
+        <Performance maxSpeed="0.0" maxAcceleration="0.0" maxDeceleration="0.0"/> <!-- Performance IS NOT SUPPORTED!!! --> <!-- maxSpeed: unit m/s   maxAcceleration: unit m/s^2   maxDeceleration: unit m/s^2 --> <!-- 0-100km/h 8.0sec 3.472m/s^2   100-0km/h 2.8sec 9.9206m/s^2 -->
+        <BoundingBox>
+          <Center x="1.5" y="0.0" z="0.9"/>
+          <Dimensions width="1.935" length="4.9" height="1.63"/>
+        </BoundingBox>
+        <Axles>
+          <FrontAxle maxSteering="0.5" wheelDiameter="0.6" trackWidth="1.8" positionX="3.1" positionZ="0.3"/>
+          <RearAxle maxSteering="0.0" wheelDiameter="0.6" trackWidth="1.8" positionX="0.0" positionZ="0.3"/>
+        </Axles>
+        <Properties>
+          <Property name="type" value="ego_vehicle"/>
+          <Property name="color" value="20,20,20"/>
+        </Properties>
+      </Vehicle>
+    </ScenarioObject>
+    
+    <ScenarioObject name="Lead_Vehicle">
+      <Vehicle name="vehicle.bmw.grandtourer" vehicleCategory="car">
+        <ParameterDeclarations/>
+        <Performance maxSpeed="0.0" maxAcceleration="0.0" maxDeceleration="0.0"/> <!-- Performance IS NOT SUPPORTED!!! --> <!-- maxSpeed: unit m/s   maxAcceleration: unit m/s^2   maxDeceleration: unit m/s^2 --> <!-- 0-100km/h 8.0sec 3.472m/s^2   100-0km/h 2.8sec 9.9206m/s^2 -->
+        <BoundingBox>
+          <Center x="1.5" y="0.0" z="0.9"/>
+          <Dimensions width="1.8" length="4.56" height="1.61"/>
+        </BoundingBox>
+        <Axles>
+          <FrontAxle maxSteering="0.5" wheelDiameter="0.6" trackWidth="1.8" positionX="3.1" positionZ="0.3"/>
+          <RearAxle maxSteering="0.0" wheelDiameter="0.6" trackWidth="1.8" positionX="0.0" positionZ="0.3"/>
+        </Axles>
+        <Properties>
+          <Property name="type" value="simulation"/>
+          <Property name="color" value="0,153,0"/>
+        </Properties>
+      </Vehicle>
+    </ScenarioObject>
+    
+    <ScenarioObject name="GVT">
+      <Vehicle name="vehicle.nissan.micra" vehicleCategory="car">
+        <ParameterDeclarations/>
+        <Performance maxSpeed="0.0" maxAcceleration="0.0" maxDeceleration="0.0"/>
+        <BoundingBox>
+          <Center x="1.5" y="0.0" z="0.9"/>
+          <Dimensions width="1.712" length="4.023" height="1.427"/> <!-- Euro NCAP GVT specs-->
+        </BoundingBox>
+        <Axles>
+          <FrontAxle maxSteering="0.5" wheelDiameter="0.6" trackWidth="1.8" positionX="3.1" positionZ="0.3"/>
+          <RearAxle maxSteering="0.0" wheelDiameter="0.6" trackWidth="1.8" positionX="0.0" positionZ="0.3"/>
+        </Axles>
+        <Properties>
+          <Property name="type" value="simulation"/>
+          <Property name="color" value="153,0,0"/>
+        </Properties>
+      </Vehicle>
+    </ScenarioObject>
+  </Entities>
+  <!-- ==================================================================================================== -->
+  <Storyboard>
+    <Init>
+      <Actions>
+        <GlobalAction>
+          <EnvironmentAction>
+            <Environment name="Environment1">
+              <TimeOfDay animation="false" dateTime="2022-10-27T12:00:00"/>
+              <Weather cloudState="free">
+                <Sun intensity="0.85" azimuth="0" elevation="1.31"/>
+                <Fog visualRange="100000.0"/>
+                <Precipitation precipitationType="dry" intensity="0.0"/>
+              </Weather>
+              <RoadCondition frictionScaleFactor="1.0"/>
+            </Environment>
+          </EnvironmentAction>
+        </GlobalAction>
+        
+        <Private entityRef="hero">
+          <PrivateAction> <!-- Init: ControllerAction, LongitudinalAction's SpeedAction, TeleportAction -->
+            <TeleportAction>
+              <Position> <!-- LanePosition, RelativeLanePosition, RelativeObjectPosition, RoadPosition, RelativeRoadPosition, WorldPosition, RelativeWorldPosition -->
+                <WorldPosition x="0.0" y="0.0" h="1.57079632"/>
+              </Position>
+            </TeleportAction>
+          </PrivateAction>
+          
+          <PrivateAction>
+            <ControllerAction>
+              <AssignControllerAction>
+                <Controller name="VUT_Agent">
+                  <Properties>
+                    <Property name="module" value="sff_control"/> <!-- value: carla_autopilot (cannot enforce maneuvers), external_control, npc_vehicle_control, simple_vehicle_control (can control acceleration/deceleration, not use CARLA engine) -->
+                    <Property name="consider_obstacles" value="true"/>
+                    <Property name="consider_trafficlights" value="false"/>
+                    <!-- <Property name="proximity_threshold" value="7.5"/> -->
+                    <Property name="max_deceleration" value="9.9206"/>
+                    <Property name="max_acceleration" value="3.4722"/>
+                    <Property name="attach_camera" value="true"/>
+                  </Properties>
+                </Controller>
+              </AssignControllerAction>
+              <OverrideControllerValueAction>
+                <Throttle value="0" active="false"/> <!-- value: 0~1   active: true, false -->
+                <Brake value="0" active="false"/>
+                <Clutch value="0" active="false"/>
+                <ParkingBrake value="0" active="false"/>
+                <SteeringWheel value="0" active="false"/>
+                <Gear number="0" active="false"/>
+              </OverrideControllerValueAction>
+            </ControllerAction>
+          </PrivateAction>
+        </Private>
+        
+        <Private entityRef="Lead_Vehicle">
+          <PrivateAction>
+            <TeleportAction>
+              <Position>
+                <RelativeWorldPosition entityRef="hero" dx="0" dy="$VUT_and_Lead_Vehicle_Distance"/>
+              </Position>
+            </TeleportAction>
+          </PrivateAction>
+          
+          <PrivateAction>
+            <ControllerAction>
+              <AssignControllerAction>
+                <Controller name="Lead_Vehicle_Agent">
+                  <Properties>
+                    <Property name="module" value="simple_vehicle_control"/> <!-- value: carla_autopilot (cannot enforce maneuvers), external_control, npc_vehicle_control, simple_vehicle_control (can control acceleration/deceleration, not use CARLA engine) -->
+                    <Property name="consider_obstacles" value="false"/>
+                    <Property name="consider_trafficlights" value="false"/>
+                    <!-- <Property name="proximity_threshold" value="7.5"/> -->
+                    <Property name="max_deceleration" value="9.9206"/>
+                    <Property name="max_acceleration" value="3.4722"/>
+                    <Property name="attach_camera" value="false"/>
+                  </Properties>
+                </Controller>
+              </AssignControllerAction>
+              <OverrideControllerValueAction>
+                <Throttle value="0" active="false"/> <!-- value: 0~1   active: true, false -->
+                <Brake value="0" active="false"/>
+                <Clutch value="0" active="false"/>
+                <ParkingBrake value="0" active="false"/>
+                <SteeringWheel value="0" active="false"/>
+                <Gear number="0" active="false"/>
+              </OverrideControllerValueAction>
+            </ControllerAction>
+          </PrivateAction>
+        </Private>
+        
+        <Private entityRef="GVT">
+          <PrivateAction>
+            <TeleportAction>
+              <Position>
+                <RelativeWorldPosition entityRef="Lead_Vehicle" dx="0" dy="$Lead_Vehicle_and_GVT_Distance"/>
+              </Position>
+            </TeleportAction>
+          </PrivateAction>
+        </Private>
+      </Actions>
+    </Init>
+    <!-- ==================================================================================================== -->
+    <Story name="MyStory">
+      <Act name="ACC_Cut-Out_VUT_Act">
+        <ManeuverGroup name="ACC_Cut-Out_VUT_ManeuverGroup" maximumExecutionCount="1">
+          <Actors selectTriggeringEntities="false">
+            <EntityRef entityRef="hero"/>
+          </Actors>
+          <Maneuver name="ACC_Cut-Out_VUT_Maneuver">
+            <Event name="Following_VUT_Accelerates_and_ACC" priority="overwrite">
+              <Action name="Following_VUT_Accelerates_and_ACC">
+                <PrivateAction>
+                  <LongitudinalAction>
+                    <SpeedAction>
+                      <SpeedActionDynamics dynamicsShape="step" value="$VUT_Total_Distance" dynamicsDimension="distance"/> <!-- VUT_Acceleration_Distance -->
+                      <SpeedActionTarget>
+                        <AbsoluteTargetSpeed value="$VUT_Target_Speed"/>
+                      </SpeedActionTarget>
+                    </SpeedAction>
+                  </LongitudinalAction>
+                </PrivateAction>
+              </Action>
+              
+              <StartTrigger>
+                <ConditionGroup>
+                  <Condition name="Following_VUT_Accelerates_and_ACC_Start_Condition" delay="0" conditionEdge="rising">
+                    <ByEntityCondition>
+                      <TriggeringEntities triggeringEntitiesRule="any">
+                        <EntityRef entityRef="hero"/>
+                      </TriggeringEntities>
+                      <EntityCondition>
+                        <TraveledDistanceCondition value="0.0"/>
+                      </EntityCondition>
+                    </ByEntityCondition>
+                  </Condition>
+                </ConditionGroup>
+              </StartTrigger>
+            </Event>
+          </Maneuver>
+        </ManeuverGroup>
+
+        <StartTrigger>
+          <ConditionGroup>
+            <Condition name="Following_VUT_Start_Condition" delay="0.5" conditionEdge="rising">
+              <ByEntityCondition>
+                <TriggeringEntities triggeringEntitiesRule="any">
+                  <EntityRef entityRef="hero"/>
+                </TriggeringEntities>
+                <EntityCondition>
+                  <TraveledDistanceCondition value="0.0"/>
+                </EntityCondition>
+              </ByEntityCondition>
+            </Condition>
+          </ConditionGroup>
+        </StartTrigger>
+        
+        <StopTrigger>
+          <ConditionGroup>
+           <Condition name="ACC_Cut-Out_Success_Stop_1" delay="0" conditionEdge="rising">
+              <ByEntityCondition>
+                <TriggeringEntities triggeringEntitiesRule="any">
+                  <EntityRef entityRef="hero"/>
+                </TriggeringEntities>
+                <EntityCondition>
+                  <StandStillCondition duration="$Success_Stop_Decision_Time"/>
+                </EntityCondition>
+              </ByEntityCondition>
+            </Condition>
+            
+            <Condition name="ACC_Cut-Out_Failure_Collision_1" delay="12.5" conditionEdge="rising">
+              <ByEntityCondition>
+                <TriggeringEntities triggeringEntitiesRule="any">
+                  <EntityRef entityRef="hero"/>
+                </TriggeringEntities>
+                <EntityCondition>
+                  <CollisionCondition>
+                    <EntityRef entityRef="GVT"/>
+                    <EntityRef entityRef="Lead_Vehicle"/>
+                    <!-- <ByType type="vehicle"/> -->
+                  </CollisionCondition>
+                </EntityCondition>
+              </ByEntityCondition>
+            </Condition>
+          </ConditionGroup>
+        </StopTrigger>
+      </Act>
+      <!-- ==================================================================================================== -->
+      <Act name="ACC_Cut-Out_Lead_Vehicle_Act">
+        <ManeuverGroup name="ACC_Cut-Out_Lead_Vehicle_ManeuverGroup" maximumExecutionCount="1">
+          <Actors selectTriggeringEntities="false"> <!-- whether consider entities as actors -->
+            <EntityRef entityRef="Lead_Vehicle"/>
+          </Actors>
+          <Maneuver name="ACC_Cut-Out_Lead_Vehicle_Maneuver_1">
+            <Event name="Leading_Lead_Vehicle_Accelerates" priority="overwrite">
+              <Action name="Leading_Lead_Vehicle_Accelerates">
+                <PrivateAction>
+                  <LongitudinalAction>
+                    <SpeedAction>
+                      <SpeedActionDynamics dynamicsShape="step" value="$Lead_Vehicle_Acceleration_Distance" dynamicsDimension="distance"/>
+                      <SpeedActionTarget>
+                        <AbsoluteTargetSpeed value="$Lead_Vehicle_Target_Speed"/>
+                      </SpeedActionTarget>
+                    </SpeedAction>
+                  </LongitudinalAction>
+                </PrivateAction>
+              </Action>
+              
+              <StartTrigger>
+                <ConditionGroup>
+                  <Condition name="Leading_Lead_Vehicle_Accelerates_Start_Condition" delay="0.6" conditionEdge="rising">
+                    <ByEntityCondition>
+                      <TriggeringEntities triggeringEntitiesRule="any">
+                        <EntityRef entityRef="hero"/>
+                      </TriggeringEntities>
+                      <EntityCondition>
+                        <TraveledDistanceCondition value="0.0"/>
+                      </EntityCondition>
+                    </ByEntityCondition>
+                  </Condition>
+                </ConditionGroup>
+              </StartTrigger>
+            </Event>
+          </Maneuver>
+          
+          <Maneuver name="ACC_Cut-Out_Lead_Vehicle_Maneuver_2">
+            <Event name="Leading_Lead_Vehicle_Changes_Lane_and_ACC" priority="overwrite">
+              <Action name="Leading_Lead_Vehicle_Changes_Lane_and_ACC">
+                <PrivateAction>
+                  <LateralAction>
+                    <LaneChangeAction>
+                      <LaneChangeActionDynamics dynamicsShape="linear" value="$Lead_Vehicle_Lane_Change_Longitudinal_Distance" dynamicsDimension="distance"/>
+                      <LaneChangeTarget>
+                        <RelativeTargetLane entityRef="Lead_Vehicle" value="-1"/>
+                      </LaneChangeTarget>
+                    </LaneChangeAction>
+                  </LateralAction>
+                </PrivateAction>
+              </Action>
+              
+              <StartTrigger>
+                <ConditionGroup>
+                  <Condition name="Leading_Lead_Vehicle_Changes_Lane_and_ACC_Start_Condition" delay="0" conditionEdge="rising">
+                    <ByValueCondition>
+                      <!-- <StoryboardElementStateCondition storyboardElementType="maneuver" storyboardElementRef="ACC_CCRb_GVT_Maneuver_1" state="endTransition"/> -->
+                      <StoryboardElementStateCondition storyboardElementType="action" storyboardElementRef="Leading_Lead_Vehicle_Accelerates" state="endTransition"/>
+                    </ByValueCondition>
+                  </Condition>
+                </ConditionGroup>
+              </StartTrigger>
+            </Event>
+          </Maneuver>
+        </ManeuverGroup>
+
+        <StartTrigger>
+          <ConditionGroup>
+            <Condition name="Leading_Lead_Vehicle_Start_Condition" delay="0.5" conditionEdge="rising">
+              <ByEntityCondition>
+                <TriggeringEntities triggeringEntitiesRule="any">
+                  <EntityRef entityRef="hero"/>
+                </TriggeringEntities>
+                <EntityCondition>
+                  <TraveledDistanceCondition value="0.0"/>
+                </EntityCondition>
+              </ByEntityCondition>
+            </Condition>
+          </ConditionGroup>
+        </StartTrigger>
+        
+        <StopTrigger>
+          <ConditionGroup>
+           <Condition name="ACC_Cut-Out_Success_Stop_2" delay="0" conditionEdge="rising">
+              <ByEntityCondition>
+                <TriggeringEntities triggeringEntitiesRule="any">
+                  <EntityRef entityRef="hero"/>
+                </TriggeringEntities>
+                <EntityCondition>
+                  <StandStillCondition duration="$Success_Stop_Decision_Time"/>
+                </EntityCondition>
+              </ByEntityCondition>
+            </Condition>
+            
+            <Condition name="ACC_Cut-Out_Failure_Collision_2" delay="12.5" conditionEdge="rising">
+              <ByEntityCondition>
+                <TriggeringEntities triggeringEntitiesRule="any">
+                  <EntityRef entityRef="hero"/>
+                </TriggeringEntities>
+                <EntityCondition>
+                  <CollisionCondition>
+                    <EntityRef entityRef="GVT"/>
+                    <!-- <ByType type="vehicle"/> -->
+                  </CollisionCondition>
+                </EntityCondition>
+              </ByEntityCondition>
+            </Condition>
+          </ConditionGroup>
+        </StopTrigger>
+      </Act>
+      <!-- ==================================================================================================== -->
+      <Act name="ACC_Cut-Out_GVT_Act">
+        <ManeuverGroup name="ACC_Cut-Out_GVT_ManeuverGroup" maximumExecutionCount="1">
+          <Actors selectTriggeringEntities="false"> <!-- whether consider entities as actors -->
+            <EntityRef entityRef="GVT"/>
+          </Actors>
+          <Maneuver name="ACC_Cut-Out_GVT_Maneuver">
+            <Event name="Leading_GVT_Stops" priority="overwrite">
+              <Action name="Leading_GVT_Stops">
+                <PrivateAction>
+                  <LongitudinalAction>
+                    <SpeedAction>
+                      <SpeedActionDynamics dynamicsShape="step" value="30" dynamicsDimension="time"/>
+                      <SpeedActionTarget>
+                        <AbsoluteTargetSpeed value="0.0"/>
+                      </SpeedActionTarget>
+                    </SpeedAction>
+                  </LongitudinalAction>
+                </PrivateAction>
+              </Action>
+              
+              <StartTrigger>
+                <ConditionGroup>
+                  <Condition name="Leading_GVT_Stops_Start_Condition" delay="0" conditionEdge="rising">
+                    <ByEntityCondition>
+                      <TriggeringEntities triggeringEntitiesRule="any">
+                        <EntityRef entityRef="hero"/>
+                      </TriggeringEntities>
+                      <EntityCondition>
+                        <TraveledDistanceCondition value="0.0"/>
+                      </EntityCondition>
+                    </ByEntityCondition>
+                  </Condition>
+                </ConditionGroup>
+              </StartTrigger>
+            </Event>
+          </Maneuver>
+        </ManeuverGroup>
+
+        <StartTrigger>
+          <ConditionGroup>
+            <Condition name="Leading_GVT_Start_Condition" delay="0.5" conditionEdge="rising">
+              <ByEntityCondition>
+                <TriggeringEntities triggeringEntitiesRule="any">
+                  <EntityRef entityRef="hero"/>
+                </TriggeringEntities>
+                <EntityCondition>
+                  <TraveledDistanceCondition value="0.0"/>
+                </EntityCondition>
+              </ByEntityCondition>
+            </Condition>
+          </ConditionGroup>
+        </StartTrigger>
+        
+        <StopTrigger>
+          <ConditionGroup>
+           <Condition name="ACC_Cut-Out_Success_Stop_3" delay="0" conditionEdge="rising">
+              <ByEntityCondition>
+                <TriggeringEntities triggeringEntitiesRule="any">
+                  <EntityRef entityRef="hero"/>
+                </TriggeringEntities>
+                <EntityCondition>
+                  <StandStillCondition duration="$Success_Stop_Decision_Time"/>
+                </EntityCondition>
+              </ByEntityCondition>
+            </Condition>
+            
+            <Condition name="ACC_Cut-Out_Failure_Collision_3" delay="12.5" conditionEdge="rising">
+              <ByEntityCondition>
+                <TriggeringEntities triggeringEntitiesRule="any">
+                  <EntityRef entityRef="hero"/>
+                </TriggeringEntities>
+                <EntityCondition>
+                  <CollisionCondition>
+                    <EntityRef entityRef="GVT"/>
+                    <!-- <ByType type="vehicle"/> -->
+                  </CollisionCondition>
+                </EntityCondition>
+              </ByEntityCondition>
+            </Condition>
+          </ConditionGroup>
+        </StopTrigger>
+      </Act>
+    </Story>
+    <!-- ==================================================================================================== -->
+    <StopTrigger>
+      <ConditionGroup>
+        <Condition name="criteria_CollisionTest" delay="0" conditionEdge="rising">
+          <ByValueCondition>
+            <ParameterCondition parameterRef="" value="" rule="lessThan"/>
+          </ByValueCondition>
+        </Condition>
+      </ConditionGroup>
+    </StopTrigger>
+  </Storyboard>
+</OpenSCENARIO>
